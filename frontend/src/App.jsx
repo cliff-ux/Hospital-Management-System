@@ -10,6 +10,8 @@ import PatientsList from "./components/PatientsList";
 import DoctorsList from "./components/DoctorsList";
 import AppointmentsList from "./components/AppointmentsList";
 import MedicalRecordsList from "./components/MedicalRecordsList";
+import DepartmentList from "./components/DepartmentList";
+import MedicationList from "./components/MedicationList";
 import HomePage from "./components/HomePage";
 import NavBar from "./components/NavBar";
 import "./App.css";
@@ -43,7 +45,9 @@ function App() {
               <Route path="/patients" element={<PatientsList />} />
               <Route path="/doctors" element={<DoctorsList />} />
               <Route path="/appointments" element={<AppointmentsList />} />
-              <Route path="/medical-records" element={<MedicalRecordsList />} />
+              <Route path="/medicalrecords" element={<MedicalRecordsList />} />
+              <Route path="/departments" element={<DepartmentList />} />
+              <Route path="/medications" element={<MedicationList />} />
               <Route path="*" element={<Navigate to="/admins" />} />{" "}
               {/* Redirect to admin list after login */}
             </Routes>
