@@ -1,4 +1,4 @@
-import React from "react";
+import  React from "react";
 
 const DoctorsList = () => {
   const doctors = [
@@ -75,19 +75,28 @@ const DoctorsList = () => {
   ];
 
   return (
-    <div>
-      <h2>Doctors List</h2>
-      <ul>
-        {doctors.map((doctor) => (
-          <li key={doctor.doctor_id}>
-            <strong>Name:</strong> {doctor.name} <br />
-            <strong>Specialization:</strong> {doctor.specialization} <br />
-            <strong>Contact:</strong> {doctor.contact_number} <br />
-            <strong>Department:</strong> {doctor.department} <br />
-            <hr />
-          </li>
-        ))}
-      </ul>
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-6">Doctors List</h2>
+      <table className="table-auto w-full text-left border-collapse">
+        <thead>
+          <tr>
+            <th className="border-b p-4">Name</th>
+            <th className="border-b p-4">Specialization</th>
+            <th className="border-b p-4">Contact Number</th>
+            <th className="border-b p-4">Department</th>
+          </tr>
+        </thead>
+        <tbody>
+          {doctors.map((doctor) => (
+            <tr key={doctor.doctor_id} className="hover:bg-gray-100">
+              <td className="border-b p-4">{doctor.name}</td>
+              <td className="border-b p-4">{doctor.specialization}</td>
+              <td className="border-b p-4">{doctor.contact_number}</td>
+              <td className="border-b p-4">{doctor.department}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

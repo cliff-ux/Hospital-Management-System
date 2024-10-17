@@ -1,20 +1,30 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import AdminList from './components/AdminList';
-import PatientsList from './components/PatientsList';
-import DoctorsList from './components/DoctorsList';
-import MedicalRecordsList from './components/MedicalRecordsList';
-import HomePage from './components/HomePage';
-import NavBar from './components/NavBar'; // Assuming you have a NavBar component
-
-import './App.css'; // Import CSS
-import AppointmentsList from './components/AppointmentsList';
+import React, { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import AdminList from "./components/AdminList";
+import PatientsList from "./components/PatientsList";
+import DoctorsList from "./components/DoctorsList";
+import AppointmentsList from "./components/AppointmentsList";
+import MedicalRecordsList from "./components/MedicalRecordsList";
+import HomePage from "./components/HomePage";
+import NavBar from "./components/NavBar";
+import "./App.css";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Handle login functionality
   const handleLogin = () => {
     setIsLoggedIn(true);
+  };
+
+  // Handle logout functionality
+  const handleLogout = () => {
+    setIsLoggedIn(false); // Reset login state to false
   };
 
   return (
@@ -22,28 +32,27 @@ function App() {
       <div>
         {isLoggedIn ? (
           <>
-            {/* Show NavBar when the user is logged in */}
+            {/* Show Navbar and Logout button when logged in */}
             <NavBar />
+            <button onClick={handleLogout} className="logout-button">
+              Logout
+            </button>
 
-            {/* Routes accessible after login */}
             <Routes>
               <Route path="/admins" element={<AdminList />} />
               <Route path="/patients" element={<PatientsList />} />
               <Route path="/doctors" element={<DoctorsList />} />
               <Route path="/appointments" element={<AppointmentsList />} />
               <Route path="/medical-records" element={<MedicalRecordsList />} />
-              
-              {/* Default route after login */}
-              <Route path="*" element={<Navigate to="/admins" />} />
+              <Route path="*" element={<Navigate to="/admins" />} />{" "}
+              {/* Redirect to admin list after login */}
             </Routes>
           </>
         ) : (
-          /* If not logged in, show the login page (HomePage) */
           <Routes>
             <Route path="/" element={<HomePage onLogin={handleLogin} />} />
-            
-            {/* Redirect all other routes to login */}
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="*" element={<Navigate to="/" />} />{" "}
+            {/* Redirect to login if not logged in */}
           </Routes>
         )}
       </div>
