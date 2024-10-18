@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../App.css';
 
 const DoctorForm = ({ onClose, onDoctorAdded, doctorToEdit }) => {
   const [name, setName] = useState('');
@@ -43,7 +44,7 @@ const DoctorForm = ({ onClose, onDoctorAdded, doctorToEdit }) => {
         required
       />
       <input
-        type="email"
+        type="text"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}

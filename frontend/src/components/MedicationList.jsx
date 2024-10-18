@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MedicationForm from './MedicationForm';
+import '../App.css';
 
 const MedicationList = () => {
     const [medications, setMedications] = useState([]);

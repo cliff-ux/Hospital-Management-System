@@ -65,9 +65,8 @@ const AppointmentList = () => {
         <thead>
           <tr>
             <th>Date</th>
-            <th>Time</th>
-            <th>Patient</th>
-            <th>Doctor</th> {/* Add Doctor column */}
+            <th>Patient Id</th>
+            <th>Doctor Id</th> 
             <th>Actions</th>
           </tr>
         </thead>
@@ -75,7 +74,6 @@ const AppointmentList = () => {
           {appointments.map((appointment) => (
             <tr key={appointment.id}>
               <td>{appointment.appointment_date}</td>
-              <td>{appointment.appointment_time}</td>
               <td>{appointment.patient_id ? appointment.patient_id : 'No Patient'}</td> {/* Display patient info */}
               <td>{appointment.doctor_id ? appointment.doctor_id : 'No Doctor'}</td> {/* Display doctor info */}
               <td>

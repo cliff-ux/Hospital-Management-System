@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import PatientForm from './PatientForm';
-import '../App.css'; // Add a separate CSS file for styles
+import '../App.css'; 
 
 const PatientsList = () => {
   const [patients, setPatients] = useState([]);
   const [formVisible, setFormVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [editingPatient, setEditingPatient] = useState(null); // For edit functionality
+  const [editingPatient, setEditingPatient] = useState(null);
 
   useEffect(() => {
     fetchPatients();

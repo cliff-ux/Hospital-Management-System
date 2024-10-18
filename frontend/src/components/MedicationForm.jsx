@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../App.css'
 
 const MedicationForm = ({ onClose, onMedicationAdded, editingMedication }) => {
     const [medication, setMedication] = useState('');

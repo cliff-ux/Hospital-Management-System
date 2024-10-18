@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import DepartmentForm from './DepartmentForm';
+import '../App.css';
 
 const DepartmentList = () => {
     const [departments, setDepartments] = useState([]);
     const [formVisible, setFormVisible] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [editingDepartment, setEditingDepartment] = useState(null); // For edit functionality
+    const [editingDepartment, setEditingDepartment] = useState(null); 
 
     useEffect(() => {
         fetchDepartments();
@@ -16,8 +17,8 @@ const DepartmentList = () => {
     const fetchDepartments = async () => {
         try {
             const response = await axios.get('http://127.0.0.1:5555/departments');
-            console.log(response.data.departments); // Log departments
-            setDepartments(response.data.departments); // Ensure it's an array
+            console.log(response.data.departments); 
+            setDepartments(response.data.departments); 
         } catch (err) {
             setError(err.message);
         } finally {
@@ -26,14 +27,14 @@ const DepartmentList = () => {
     };
 
     const handleDelete = async (departmentId) => {
-        console.log("Deleting department with ID:", departmentId); // Log the ID
+        console.log("Deleting department with ID:", departmentId); 
         try {
-            const response = await axios.delete(`http://127.0.0.1:5555/departments/${departmentId}`); // Ensure to use 'id'
-            console.log("Delete response:", response.data); // Log the response
+            const response = await axios.delete(`http://127.0.0.1:5555/departments/${departmentId}`); 
+            console.log("Delete response:", response.data); 
             fetchDepartments(); // Refresh the list after deletion
         } catch (error) {
             setError('Error deleting department');
-            console.error('Delete error:', error.response ? error.response.data : error); // Log detailed error
+            console.error('Delete error:', error.response ? error.response.data : error); 
         }
     };
 

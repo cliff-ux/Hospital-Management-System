@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import DoctorForm from './DoctorForm';
+import '../App.css';
 
 
 const DoctorList = () => {
