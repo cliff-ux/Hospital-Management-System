@@ -7,7 +7,7 @@ const MedicationList = () => {
     const [formVisible, setFormVisible] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [editingMedication, setEditingMedication] = useState(null);
+    const [editingMedication, setEditingMedication] = useState(null); // For edit functionality
 
     useEffect(() => {
         fetchMedications();
@@ -16,60 +16,54 @@ const MedicationList = () => {
     const fetchMedications = async () => {
         try {
             const response = await axios.get('http://127.0.0.1:5555/medications');
-            if (response.data && Array.isArray(response.data.medications)) {
-                setMedications(response.data.medications); // Ensure it's an array
-            } 
+            setMedications(response.data.medications);
         } catch (err) {
-            setError(err.message); // Set error message
+            setError(err.message);
         } finally {
-            setLoading(false); // Set loading to false after fetching
+            setLoading(false);
         }
     };
 
     const handleDelete = async (id) => {
-        
         try {
-            await axios.delete(`http://127.0.0.1:5555//medications/${id}`);
+            await axios.delete(`http://127.0.0.1:5555/medications/${id}`);
             fetchMedications(); // Refresh the list after deletion
         } catch (error) {
             setError('Error deleting medication');
+            console.error('Delete error:', error.response ? error.response.data : error);
         }
     };
 
     const handleEdit = (medication) => {
-        setEditingMedication(medication);
+        setEditingMedication(medication); // Set the medication to edit
         setFormVisible(true);
     };
 
     const toggleForm = () => {
         setFormVisible(!formVisible);
-        setEditingMedication(true); // Reset editing state
+        setEditingMedication(null); // Reset editing state
     };
 
-    if (loading) {
-        return <div>Loading ...</div>; // Loading state
-    }
-
-    if (error) {
-        return <div>Error loading Medication: {error}</div>; // Error state
-    }
+    if (loading) return <div>Loading medications...</div>;
+    if (error) return <div>Error loading medications: {error}</div>;
 
     return (
         <div>
             <h1>Medications</h1>
+
             <table className="medications-table">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Medication</th>
                         <th>Dosage</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {medications.map((medication) => (
-                        <tr key={medication.medication_id}>
-                            <td>{medication.name}</td>
-                            <td>{medication.time}</td>
+                        <tr key={medication.id}>
+                            <td>{medication.medication_name}</td>
+                            <td>{medication.dosage}</td>
                             <td>
                                 <button className="button-spacing" onClick={() => handleEdit(medication)}>Edit</button>
                                 <button className="button-spacing" onClick={() => handleDelete(medication.id)}>Delete</button>
@@ -78,19 +72,20 @@ const MedicationList = () => {
                     ))}
                 </tbody>
             </table>
-            <button className="add-medication-button" onClick={toggleForm}>
+
+            {formVisible && (
+                <MedicationForm
+                    onClose={toggleForm}
+                    onMedicationAdded={fetchMedications}
+                    editingMedication={editingMedication}
+                />
+            )}
+
+            <button className="button-spacing" onClick={toggleForm}>
                 {formVisible ? 'Cancel' : 'Add Medication'}
             </button>
-
-      {formVisible && (
-        <MedicationForm
-          onClose={toggleForm}
-          onDoctorAdded={fetchMedications}
-          doctorToEdit={editingMedication} // Pass the doctor to edit
-        />
-      )}        
-      </div>
-    )
-}
+        </div>
+    );
+};
 
 export default MedicationList;

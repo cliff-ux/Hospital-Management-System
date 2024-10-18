@@ -12,13 +12,13 @@ const AppointmentForm = ({ onClose, onAppointmentAdded, editingAppointment }) =>
       setDate(editingAppointment.appointment_date);
       setTime(editingAppointment.appointment_time);
       setPatientId(editingAppointment.patient_id);
-      setDoctorId(editingAppointment.doctor_id); // Pre-populate doctorId if editing
+      setDoctorId(editingAppointment.doctor_id); 
     } else {
       // Reset fields when not editing
       setDate('');
       setTime('');
       setPatientId('');
-      setDoctorId(''); // Reset doctorId
+      setDoctorId(''); 
     }
   }, [editingAppointment]);
 
@@ -30,7 +30,7 @@ const AppointmentForm = ({ onClose, onAppointmentAdded, editingAppointment }) =>
         appointment_date: date,
         appointment_time: time,
         patient_id: patientId,
-        doctor_id: doctorId, // Include doctor_id in payload
+        doctor_id: doctorId, 
       };
 
       if (editingAppointment && editingAppointment.id) {
