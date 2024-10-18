@@ -1,104 +1,96 @@
-import  React from "react";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import DoctorForm from './DoctorForm';
+import '../App.css';
 
-const DoctorsList = () => {
-  const doctors = [
-    {
-      doctor_id: 1,
-      name: "Dr. Alice Mwangi",
-      specialization: "Cardiologist",
-      contact_number: "+254701234567",
-      department: "Cardiology",
-    },
-    {
-      doctor_id: 2,
-      name: "Dr. Issack Ali",
-      specialization: "Neurologist",
-      contact_number: "+254712345678",
-      department: "Neurology",
-    },
-    {
-      doctor_id: 3,
-      name: "Dr. Milton Obilo",
-      specialization: "Orthopedic surgeon",
-      contact_number: "+254722345679",
-      department: "Orthopedics",
-    },
-    {
-      doctor_id: 4,
-      name: "Dr. Wambua Steven",
-      specialization: "Dermatologist",
-      contact_number: "+254733456789",
-      department: "Dermatology",
-    },
-    {
-      doctor_id: 5,
-      name: "Dr. Elizabeth Anyango",
-      specialization: "Pediatrician",
-      contact_number: "+254744567890",
-      department: "Pediatrics",
-    },
-    {
-      doctor_id: 6,
-      name: "Dr. Frank Martin",
-      specialization: "Ophthalmologist",
-      contact_number: "+254755678901",
-      department: "Ophthalmology",
-    },
-    {
-      doctor_id: 7,
-      name: "Dr. Grace Wambui",
-      specialization: "Gynecologist",
-      contact_number: "+254766789012",
-      department: "Gynecology",
-    },
-    {
-      doctor_id: 8,
-      name: "Dr. Henry Elvis",
-      specialization: "General Surgeon",
-      contact_number: "+254777890123",
-      department: "Surgery",
-    },
-    {
-      doctor_id: 9,
-      name: "Dr. Duncun Gikonyo",
-      specialization: "Psychiatrist",
-      contact_number: "+254788901234",
-      department: "Psychiatry",
-    },
-    {
-      doctor_id: 10,
-      name: "Dr. James Kelvin",
-      specialization: "Endocrinologist",
-      contact_number: "+254799012345",
-      department: "Endocrinology",
-    },
-  ];
 
-  return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">Doctors List</h2>
-      <table className="table-auto w-full text-left border-collapse">
-        <thead>
-          <tr>
-            <th className="border-b p-4">Name</th>
-            <th className="border-b p-4">Specialization</th>
-            <th className="border-b p-4">Contact Number</th>
-            <th className="border-b p-4">Department</th>
+const DoctorList = () => {
+    const [doctors, setDoctors] = useState([]);
+    const [formVisible, setFormVisible] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [doctorToEdit, setDoctorToEdit] = useState(null); // New state for editing
+
+    useEffect(() => {
+        fetchDoctors();
+    }, []);
+
+    const fetchDoctors = async () => {
+        try {
+            const response = await axios.get('http://127.0.0.1:5555/doctors');
+            if (response.data && Array.isArray(response.data.doctors)) {
+                setDoctors(response.data.doctors);
+            }
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const toggleForm = () => {
+        setFormVisible(!formVisible);
+        setDoctorToEdit(null); // Reset editing state when toggling
+    };
+
+    const handleEdit = (doctor) => {
+        setDoctorToEdit(doctor);
+        setFormVisible(true);
+    };
+
+    const handleDelete = async (id) => {
+        await axios.delete(`http://127.0.0.1:5555/doctors/${id}`);
+        fetchDoctors();
+    };
+
+    if (loading) {
+        return <div>Loading doctors...</div>;
+    }
+
+    if (error) {
+        return <div>Error loading doctors: {error}</div>;
+    }
+
+return (
+  <div className="doctors-list">
+    <h2>Doctors</h2>
+   
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Speciality</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {doctors.map(doctor => (
+          <tr key={doctor.id}>
+            <td>{doctor.name}</td>
+            <td>{doctor.email}</td>
+            <td>{doctor.speciality}</td>
+            <td>
+              <button className="button-spacing" onClick={() => handleEdit(doctor)}>Edit</button>
+              <button className="button-spacing" onClick={() => handleDelete(doctor.id)}>Delete</button>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {doctors.map((doctor) => (
-            <tr key={doctor.doctor_id} className="hover:bg-gray-100">
-              <td className="border-b p-4">{doctor.name}</td>
-              <td className="border-b p-4">{doctor.specialization}</td>
-              <td className="border-b p-4">{doctor.contact_number}</td>
-              <td className="border-b p-4">{doctor.department}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
+        ))}
+      </tbody>
+    </table>
+      <button className="add-doctor-button" onClick={toggleForm}>
+        {formVisible ? 'Cancel' : 'Add Doctor'}
+      </button>
 
-export default DoctorsList;
+      {formVisible && (
+        <DoctorForm
+          onClose={toggleForm}
+          onDoctorAdded={fetchDoctors}
+          doctorToEdit={doctorToEdit} // Pass the doctor to edit
+        />
+      )}
+  </div>
+);
+}
+
+export default DoctorList;

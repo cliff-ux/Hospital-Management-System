@@ -24,7 +24,10 @@ const NavBar = () => {
           <Link to="/appointments">Appointments</Link>
         </li>
         <li>
-          <Link to="/medical-records">Medical Records</Link>
+          <Link to="/departments">Departments</Link>
+        </li>
+        <li>
+          <Link to="/medications">Medications</Link>
         </li>
       </ul>
     </nav>
