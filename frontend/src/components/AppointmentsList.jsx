@@ -18,6 +18,7 @@ const AppointmentList = () => {
   const fetchAppointments = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:5555/appointments');
+      console.log('Fetched appointments:', response.data.appointments);
       if (response.data && Array.isArray(response.data.appointments)) {
         setAppointments(response.data.appointments);
       }
@@ -28,17 +29,18 @@ const AppointmentList = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (appointment) => {
     try {
-      await axios.delete(`http://127.0.0.1:5555/appointments/${id}`);
+      await axios.delete(`http://127.0.0.1:5555/appointments/${appointment.id}`);
       fetchAppointments(); // Refresh the list after deletion
     } catch (error) {
       setError('Error deleting appointment');
-      console.error('Error deleting appointment:', error)
+      console.error('Error deleting appointment:', error);
     }
   };
 
   const handleEdit = (appointment) => {
+    console.log('Editing appointment:', appointment);
     setEditingAppointment(appointment);
     setFormVisible(true);
   };
@@ -65,18 +67,20 @@ const AppointmentList = () => {
             <th>Date</th>
             <th>Time</th>
             <th>Patient</th>
+            <th>Doctor</th> {/* Add Doctor column */}
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {appointments.map((appointment) => (
-            <tr key={appointment.appointment_id || appointment.id }>
+            <tr key={appointment.id}>
               <td>{appointment.appointment_date}</td>
               <td>{appointment.appointment_time}</td>
-              <td>{appointment.patient_id}</td>
+              <td>{appointment.patient_id ? appointment.patient_id : 'No Patient'}</td> {/* Display patient info */}
+              <td>{appointment.doctor_id ? appointment.doctor_id : 'No Doctor'}</td> {/* Display doctor info */}
               <td>
-                <button onClick={() => handleEdit(appointment)}>Edit</button>
-                <button onClick={() => handleDelete(appointment.appointment_id)}>Delete</button>
+                <button className="button-spacing" onClick={() => handleEdit(appointment)}>Edit</button>
+                <button className="button-spacing" onClick={() => handleDelete(appointment)}>Delete</button>
               </td>
             </tr>
           ))}
@@ -90,7 +94,7 @@ const AppointmentList = () => {
           onClose={toggleForm}
           onAppointmentAdded={fetchAppointments}
           editingAppointment={editingAppointment}
-        /> 
+        />
       )}
     </div>
   );

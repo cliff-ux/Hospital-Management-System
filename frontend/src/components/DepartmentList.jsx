@@ -63,8 +63,8 @@ const toggleForm = () => {
             <tr key={department.department_id || department.id}>
                 <td>{department.department_name}</td>
               <td>
-                <button onClick={() => handleEdit(department)}>Edit</button>
-                <button onClick={() => handleDelete(department.department_id)}>Delete</button>
+                <button className="button-spacing" onClick={() => handleEdit(department)}>Edit</button>
+                <button className="button-spacing" onClick={() => handleDelete(department.department_id)}>Delete</button>
               </td>
             </tr>
           ))}
