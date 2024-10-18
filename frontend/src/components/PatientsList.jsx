@@ -29,9 +29,9 @@ const PatientsList = () => {
     }
   };
 
-  const handleDelete = async (patientId) => {
+  const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://127.0.0.1:5555/patients/${patientId}`);
+      await axios.delete(`http://127.0.0.1:5555/patients/${id}`);
       fetchPatients();
     } catch (error) {
       setError("Error deleting patient");
@@ -56,9 +56,38 @@ const PatientsList = () => {
     return <div>Error loading patients: {error}</div>;
   }
 
-  return (
-    <div className="patients-list">
-      <h1>Patients List</h1>
+ return (
+  <div className="patients-list">
+    <h2>Patients</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Gender</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {patients.map((patient) => (
+          <tr key={patient.id}>
+            <td>{patient.name}</td>
+            <td>{patient.age}</td>
+            <td>{patient.gender}</td>
+            <td>{patient.date}</td>
+            <td>
+              <button className="button-spacing" onClick={() => handleEdit(patient)}>Edit</button>
+              <button className="button-spacing" onClick={() => handleDelete(patient.id)}>Delete</button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+      <button className="add-patient-button" onClick={toggleForm}>
+        {formVisible ? 'Cancel' : 'Add Patient'}
+      </button>
+
       {formVisible && (
         <PatientForm
           onClose={toggleForm}
@@ -66,34 +95,9 @@ const PatientsList = () => {
           editingPatient={editingPatient} // Pass the editing patient to the form
         />
       )}
-      <table className="patients-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Date of Birth</th>
-            <th>Email</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {patients.map((patient) => (
-            <tr key={patient.patient_id}>
-              <td>{patient.name}</td>
-              <td>{patient.date_of_birth}</td>
-              <td>{patient.email}</td>
-              <td>
-                <button onClick={() => handleEdit(patient)}>Edit</button>
-                <button onClick={() => handleDelete(patient.patient_id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <button className="add-patient-button" onClick={toggleForm}>
-        {formVisible ? 'Cancel' : 'Add Patient'}
-      </button>
-    </div>
-  );
+  </div>
+);
+
 };
 
 export default PatientsList;

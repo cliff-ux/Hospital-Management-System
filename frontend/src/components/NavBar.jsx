@@ -24,9 +24,6 @@ const NavBar = () => {
           <Link to="/appointments">Appointments</Link>
         </li>
         <li>
-          <Link to="/medicalrecords">Medical Records</Link>
-        </li>
-        <li>
           <Link to="/departments">Departments</Link>
         </li>
         <li>

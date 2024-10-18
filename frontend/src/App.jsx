@@ -45,7 +45,6 @@ function App() {
               <Route path="/patients" element={<PatientsList />} />
               <Route path="/doctors" element={<DoctorsList />} />
               <Route path="/appointments" element={<AppointmentsList />} />
-              <Route path="/medicalrecords" element={<MedicalRecordsList />} />
               <Route path="/departments" element={<DepartmentList />} />
               <Route path="/medications" element={<MedicationList />} />
               <Route path="*" element={<Navigate to="/admins" />} />{" "}

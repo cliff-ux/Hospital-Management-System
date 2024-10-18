@@ -3,14 +3,16 @@ import axios from 'axios';
 
 const PatientForm = ({ onClose, onPatientAdded, editingPatient }) => {
   const [name, setName] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
-  const [email, setEmail] = useState('');
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [date, setDate] = useState('')
 
   useEffect(() => {
     if (editingPatient) {
       setName(editingPatient.name);
-      setDateOfBirth(editingPatient.date_of_birth);
-      setEmail(editingPatient.email);
+      setAge(editingPatient.age);
+      setGender(editingPatient.gender);
+      setDate(editingPatient.date);
     }
   }, [editingPatient]);
 
@@ -18,16 +20,18 @@ const PatientForm = ({ onClose, onPatientAdded, editingPatient }) => {
     e.preventDefault();
     try {
       if (editingPatient) {
-        await axios.put(`http://127.0.0.1:5555/patients/${editingPatient.patient_id}`, {
+        await axios.patch(`http://127.0.0.1:5555/patients/${editingPatient.patient_id || editingPatient.id}`, {
           name,
-          date_of_birth: dateOfBirth,
-          email,
+          age,
+          gender,
+          date,
         });
       } else {
         await axios.post('http://127.0.0.1:5555/patients', {
           name,
-          date_of_birth: dateOfBirth,
-          email,
+          age,
+          gender,
+          date,
         });
       }
       onPatientAdded();
@@ -47,17 +51,24 @@ const PatientForm = ({ onClose, onPatientAdded, editingPatient }) => {
         required
       />
       <input
-        type="date"
-        placeholder="Date of Birth"
-        value={dateOfBirth}
-        onChange={(e) => setDateOfBirth(e.target.value)}
+        type="number"
+        placeholder="Age"
+        value={age}
+        onChange={(e) => setAge(e.target.value)}
         required
       />
       <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        type="text"
+        placeholder="Gender"
+        value={gender}
+        onChange={(e) => setGender(e.target.value)}
+        required
+      />
+      <input
+        type="date"
+        placeholder="Date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
         required
       />
       <button type="submit">{editingPatient ? 'Update Patient' : 'Add Patient'}</button>

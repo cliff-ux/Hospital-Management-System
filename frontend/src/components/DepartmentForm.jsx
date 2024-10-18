@@ -7,13 +7,19 @@ const DepartmentForm = ({ onClose, onDepartmentAdded }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await axios.post('http://127.0.0.1:5555/departments', { department_name: departmentName });
-        onDepartmentAdded();
-        onClose();
+        onDepartmentAdded(); // Refresh the list of departments
+        onClose(); // Close the form
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="Department Name" value={departmentName} onChange={(e) => setDepartmentName(e.target.value)} required />
+            <input
+                type="text"
+                placeholder="Department Name"
+                value={departmentName}
+                onChange={(e) => setDepartmentName(e.target.value)}
+                required
+            />
             <button type="submit">Add Department</button>
             <button type="button" onClick={onClose}>Cancel</button>
         </form>
@@ -21,3 +27,4 @@ const DepartmentForm = ({ onClose, onDepartmentAdded }) => {
 };
 
 export default DepartmentForm;
+

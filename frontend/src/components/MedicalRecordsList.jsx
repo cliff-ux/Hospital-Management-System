@@ -14,7 +14,7 @@ const MedicalRecordList = () => {
 
     const fetchRecords = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:5555/medicalrecord');
+            const response = await axios.get('http://127.0.0.1:5555/medicalrecords');
             if (response.data && Array.isArray(response.data.records)) {
                 setRecords(response.data.doctors); // Ensure it's an array
             } else {
