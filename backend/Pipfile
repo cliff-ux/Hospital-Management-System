@@ -1,5 +1,9 @@
 [[source]]
+<<<<<<< HEAD
 url = "https://pypi.org/simple"
+=======
+url = "https://pypi.python.org/simple"
+>>>>>>> 978856bffcac5971938b20432c36321cf8fc0785
 verify_ssl = true
 name = "pypi"
 
